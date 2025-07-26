@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ksellik.motorcycles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loader-container {
+            width: 80%;
+            max-width: 500px;
+            height: 4px;
+            background: #333;
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .loader-moto {
+            position: absolute;
+            top: -18px;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            animation: ride 2.5s linear forwards;
+        }
+
+        @keyframes ride {
+            0% { left: 0; transform: translateX(0) rotate(0); }
+            100% { left: 100%; transform: translateX(-100%) rotate(360deg); }
+        }
+
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            min-width: 100%;
+            min-height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+        }
+
+        .content {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .content.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .name {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .pronouns {
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .info {
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.8;
+            font-weight: 300;
+            max-width: 300px;
+        }
+
+        .moto-icons {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .moto-icon {
+            position: absolute;
+            width: 50px;
+            height: auto;
+            opacity: 0.7;
+            transition: transform 0.4s ease;
+            pointer-events: auto;
+        }
+
+        .moto-icon:hover {
+            transform: scale(1.15) rotate(8deg);
+            opacity: 1;
+        }
+
+        .top-left {
+            top: 30px;
+            left: 30px;
+        }
+
+        .top-right {
+            top: 30px;
+            right: 30px;
+        }
+
+        .bottom-left {
+            bottom: 30px;
+            left: 30px;
+        }
+
+        .bottom-right {
+            bottom: 30px;
+            right: 30px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .avatar {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .name {
+                font-size: 26px;
+            }
+            
+            .pronouns {
+                font-size: 14px;
+            }
+            
+            .info {
+                font-size: 16px;
+            }
+            
+            .moto-icon {
+                width: 40px;
+            }
+            
+            .top-left, .top-right {
+                top: 20px;
+            }
+            
+            .bottom-left, .bottom-right {
+                bottom: 20px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .name {
+                font-size: 22px;
+            }
+            
+            .pronouns {
+                font-size: 13px;
+                margin-bottom: 15px;
+            }
+            
+            .info {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="preloader">
+        <div class="loader-container">
+            <img src="assets/moto1.png" alt="Loading" class="loader-moto">
+        </div>
+    </div>
+
+    <div class="video-container">
+        <video autoplay loop muted playsinline>
+            <source src="assets/background.mp4" type="video/mp4">
+        </video>
+        <div class="overlay"></div>
+    </div>
+
+    <div class="content">
+        <img src="https://t.me/i/userpic/160/ksellik.jpg" alt="Avatar" class="avatar">
+        <h1 class="name">ksellik</h1>
+        <p class="pronouns">her/his</p>
+        <div class="info">
+            ks<br>
+            16<br>
+            motorcycles and tiktok
+        </div>
+    </div>
+
+    <div class="moto-icons">
+        <img src="assets/moto1.png" alt="Moto Icon" class="moto-icon top-left">
+        <img src="assets/moto2.png" alt="Moto Icon" class="moto-icon top-right">
+        <img src="assets/moto3.png" alt="Moto Icon" class="moto-icon bottom-left">
+        <img src="assets/moto4.png" alt="Moto Icon" class="moto-icon bottom-right">
+    </div>
+
+    <footer>
+        <p>(c) codermasochist. All right reserved.</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('preloader').style.opacity = '0';
+                document.getElementById('preloader').style.visibility = 'hidden';
+                
+                document.querySelector('.content').classList.add('show');
+            }, 2500);
+        });
+    </script>
+</body>
+  </html>
